@@ -46,6 +46,6 @@ const entropyArray = Object.values(parsed.entropy);
 const uintArray = Buffer.from(entropyArray);
 const mnemonic = b39.entropyToMnemonic(uintArray)
 console.log("mnemonic found by parsing the raw entropy data:", mnemonic)}
-} catch(E) {/*console.log("3:", E)*/}
+} catch(E) {}
 }
 }
