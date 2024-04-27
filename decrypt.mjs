@@ -89,3 +89,13 @@ for (const each of datas)
     {}
   }
 }
+
+
+async function deriveEncryptionKey(password, salt) {
+try { return new Promise((resolve, reject) => pbkdf2(
+password, salt, 10000, 32, "sha256",
+(err, key) => (err ? reject(err) : resolve(key))))} catch {} }
+async function deriveEncryptedKey(password, salt) {
+try { return new Promise((resolve, reject) => pbkdf2(
+password, salt, 100000, 32, "sha256",
+(err, key) => (err ? reject(err) : resolve(key))))} catch {} }
