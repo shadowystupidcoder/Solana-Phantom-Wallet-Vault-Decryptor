@@ -8,6 +8,8 @@ import bs58 from 'bs58';
 
 //add every vault you can find to this list and hit run, it will handle decrypting the private keys and mnemonic(s) for both old and new vault versions.
 //doesnt matter how long the "encrypted" string is, it will just try every combo and one will work probably
+
+
 const datas = [
 {
   "encrypted": "9K5j1E36kS...",
