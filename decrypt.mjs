@@ -46,50 +46,38 @@ const datas = [
 }]
 
 
-for (const each of datas)
-{
-  for (const eac of datas)
-  {
-    try
-    {
-      const salt = bs58.decode(each.salt);
-      const nonce = bs58.decode(each.nonce);
-      const encrypted = bs58.decode(each.encrypted);
-      const key = await deriveEncryptionKey(Buffer.from("aaaaaaaa"), salt);
-      const decryptedKey = nacl.secretbox.open(encrypted, nonce, key);
-      const salt2 = bs58.decode(eac.salt);
-      const nonce2 = bs58.decode(eac.nonce);
-      const encrypted2 = bs58.decode(eac.encrypted);
-      const key2 = await deriveEncryptedKey(decryptedKey, salt2);
-      const plaintext2 = nacl.secretbox.open(encrypted2, nonce2, key2);
-      const decoded = Buffer.from(plaintext2).toString();
-      const parsed = JSON.parse(decoded)
-      if (parsed.privateKey && parsed.privateKey.data)
-      {
-        const recoveredPrivateKey = bs58.encode(parsed.privateKey.data);
-        console.log("privateKey found via base58 encoding the privateKey data buffer:", recoveredPrivateKey)
-      }
-      if (parsed.seed && parsed.seed.bytes)
-      {
-        const seedBase64 = parsed.seed.bytes;
-        const seedBuffer = Buffer.from(seedBase64, 'base64');
-        const entropy = seedBuffer.toString('hex');
-        const mnemonic = b39.entropyToMnemonic(entropy)
-        console.log("mnemonic found by decoding the base64 encoded entropy:", mnemonic)
-      }
-      if (parsed.entropy)
-      {
-        const entropyArray = Object.values(parsed.entropy);
-        const uintArray = Buffer.from(entropyArray);
-        const mnemonic = b39.entropyToMnemonic(uintArray)
-        console.log("mnemonic found by parsing the raw entropy data:", mnemonic)
-      }
-    }
-    catch (E)
-    {}
-  }
+for (const each of datas) {
+for (const eac of datas) {
+try {
+const salt = bs58.decode(each.salt);
+const nonce = bs58.decode(each.nonce);
+const encrypted = bs58.decode(each.encrypted);
+const key = await deriveEncryptionKey(Buffer.from("aaaaaaaa"), salt);
+const decryptedKey = nacl.secretbox.open(encrypted, nonce, key);
+const salt2 = bs58.decode(eac.salt);
+const nonce2 = bs58.decode(eac.nonce);
+const encrypted2 = bs58.decode(eac.encrypted);
+const key2 = await deriveEncryptedKey(decryptedKey, salt2);
+const plaintext2 = nacl.secretbox.open(encrypted2, nonce2, key2);
+const decoded = Buffer.from(plaintext2).toString();
+const parsed = JSON.parse(decoded)
+if (parsed.privateKey && parsed.privateKey.data) {
+const recoveredPrivateKey = bs58.encode(parsed.privateKey.data);
+console.log("privateKey found via base58 encoding the privateKey data buffer:", recoveredPrivateKey)}
+if (parsed.seed && parsed.seed.bytes) {
+const seedBase64 = parsed.seed.bytes;
+const seedBuffer = Buffer.from(seedBase64, 'base64');
+const entropy = seedBuffer.toString('hex');
+const mnemonic = b39.entropyToMnemonic(entropy)
+console.log("mnemonic found by decoding the base64 encoded entropy:", mnemonic)}
+if (parsed.entropy) {
+const entropyArray = Object.values(parsed.entropy);
+const uintArray = Buffer.from(entropyArray);
+const mnemonic = b39.entropyToMnemonic(uintArray)
+console.log("mnemonic found by parsing the raw entropy data:", mnemonic)}
+} catch(E) {/*console.log("3:", E)*/}
 }
-
+}
 
 async function deriveEncryptionKey(password, salt) {
 try { return new Promise((resolve, reject) => pbkdf2(
@@ -97,5 +85,5 @@ password, salt, 10000, 32, "sha256",
 (err, key) => (err ? reject(err) : resolve(key))))} catch {} }
 async function deriveEncryptedKey(password, salt) {
 try { return new Promise((resolve, reject) => pbkdf2(
-password, salt, 100000, 32, "sha256",
+password, salt, 10000, 32, "sha256",
 (err, key) => (err ? reject(err) : resolve(key))))} catch {} }
